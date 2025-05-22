@@ -24,3 +24,17 @@ export const Colors = {
     tabIconSelected: tintColorDark,
   },
 };
+
+export const TILE_COLOURS: { [key: number]: string } = {
+  2: '#FFFDE7',
+  4: '#FFF9C4',
+  8: '#FFF59D',
+  16: '#FFF176',
+  32: '#FFEE58',
+  64: '#FFEB3B',
+  128: '#FDD835',
+  256: '#FBC02D',
+  512: '#F9A825',
+  1024: '#F57F17',
+  2048: '#FFD600',
+};
