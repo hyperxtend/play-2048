@@ -489,7 +489,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ grid, move }) => {
           const index = rowIndex * 4 + colIndex;
           return (
             <Animated.View
-              key={cell.id}
+              key={`${cell.id}-${index}`}
               style={[
                 animatedStyles[index],
                 {
