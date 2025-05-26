@@ -10,7 +10,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Scoreboard score={score} gameOver={gameOver} won={won} reset={reset} />
+      <Scoreboard score={score} gameOver={gameOver} won={won} />
       <GameBoard grid={grid} move={move} />
       <View style={styles.buttonContainer}>
         <TouchableOpacity

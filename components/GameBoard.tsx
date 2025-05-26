@@ -1,13 +1,13 @@
 import { DOWN_DIRECTION, LEFT_DIRECTION, RIGHT_DIRECTION, TILE_COLOURS, TILE_MARGIN, UP_DIRECTION } from '@/constants';
 import type { Directions, Grid } from '@/types';
 import React, { useEffect, useState } from 'react';
-import { Dimensions, PanResponder, Platform, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Platform, StyleSheet, Text, View } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withDelay, withSequence, withTiming } from 'react-native-reanimated';
+
 interface GameBoardProps {
   grid: Grid;
   move: (direction: Directions) => void;
 }
-
 
 export const GameBoard: React.FC<GameBoardProps> = ({ grid, move }) => {
   const { width } = Dimensions.get('window');
@@ -390,40 +390,77 @@ export const GameBoard: React.FC<GameBoardProps> = ({ grid, move }) => {
             );
           }
         }
-
       });
     });
   }, [grid, animationStates, tileSize, lastMove]);
 
-  // Swipe handling for mobile
-  const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onMoveShouldSetPanResponder: () => true,
-    onPanResponderRelease: (e, gesture) => {
-      const { dx, dy } = gesture;
-      const absDx = Math.abs(dx);
-      const absDy = Math.abs(dy);
+  // Touch event handling for mobile web
+  useEffect(() => {
+    if (Platform.OS === 'web') {
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let touchEndX = 0;
+      let touchEndY = 0;
 
-      if (absDx > absDy && absDx > 50) {
-        if (dx > 0) {
-          setLastMove(RIGHT_DIRECTION);
-          move(RIGHT_DIRECTION);
-        } else {
-          setLastMove(LEFT_DIRECTION);
-          move(LEFT_DIRECTION);
+      const handleTouchStart = (e: Event) => {
+        const touchEvent = e as TouchEvent;
+        touchStartX = touchEvent.touches[0].clientX;
+        touchStartY = touchEvent.touches[0].clientY;
+      };
+
+      const handleTouchMove = (e: Event) => {
+        const touchEvent = e as TouchEvent;
+        touchEndX = touchEvent.touches[0].clientX;
+        touchEndY = touchEvent.touches[0].clientY;
+      };
+
+      const handleTouchEnd = () => {
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+        const absDeltaX = Math.abs(deltaX);
+        const absDeltaY = Math.abs(deltaY);
+
+        if (absDeltaX > absDeltaY && absDeltaX > 50) {
+          if (deltaX > 0) {
+            setLastMove(RIGHT_DIRECTION);
+            move(RIGHT_DIRECTION);
+          } else {
+            setLastMove(LEFT_DIRECTION);
+            move(LEFT_DIRECTION);
+          }
+        } else if (absDeltaY > absDeltaX && absDeltaY > 50) {
+          if (deltaY > 0) {
+            setLastMove(DOWN_DIRECTION);
+            move(DOWN_DIRECTION);
+          } else {
+            setLastMove(UP_DIRECTION);
+            move(UP_DIRECTION);
+          }
         }
-      } else if (absDy > absDx && absDy > 50) {
-        if (dy > 0) {
-          setLastMove(DOWN_DIRECTION);
-          move(DOWN_DIRECTION);
-        } else {
-          setLastMove(UP_DIRECTION);
-          move(UP_DIRECTION);
-        }
+
+        // Reset touch coordinates
+        touchStartX = 0;
+        touchStartY = 0;
+        touchEndX = 0;
+        touchEndY = 0;
+      };
+
+      const boardElement = document.querySelector('.board');
+      if (boardElement) {
+        boardElement.addEventListener('touchstart', handleTouchStart, { passive: true });
+        boardElement.addEventListener('touchmove', handleTouchMove, { passive: true });
+        boardElement.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+        return () => {
+          boardElement.removeEventListener('touchstart', handleTouchStart);
+          boardElement.removeEventListener('touchmove', handleTouchMove);
+          boardElement.removeEventListener('touchend', handleTouchEnd);
+        };
       }
-    },
-  });
+    }
+  }, [move]);
 
+  // Keyboard handling for web
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
@@ -459,7 +496,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ grid, move }) => {
   return (
     <View
       style={[styles.board, { width: BOARD_SIZE + 6, height: BOARD_SIZE + 8, padding: TILE_MARGIN / 2, overflow: 'hidden' }]}
-      {...(Platform.OS !== 'web' ? panResponder.panHandlers : {})}
+      className="board" // Added className for touch event targeting
     >
       {Array(4)
         .fill(null)

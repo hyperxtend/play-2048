@@ -38,3 +38,5 @@ export const TILE_COLOURS: { [key: number]: string } = {
   1024: '#F57F17',
   2048: '#FFD600',
 };
+
+

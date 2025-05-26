@@ -5,17 +5,15 @@ interface ScoreboardProps {
   score: number;
   gameOver: boolean;
   won: boolean;
-  reset: () => void;
 }
 
-export const Scoreboard: React.FC<ScoreboardProps> = ({ score, gameOver, won, reset }) => {
+export const Scoreboard: React.FC<ScoreboardProps> = ({ score, gameOver, won }) => {w
   return (
     <View style={styles.container}>
       <View style={styles.scoreContainer}>
         <Text style={styles.scoreLabel}>Score</Text>
         <Text style={styles.scoreValue}>{score}</Text>
       </View>
-    
       {(gameOver || won) && (
         <View style={styles.messageContainer}>
           <Text style={styles.messageText}>
@@ -29,13 +27,13 @@ export const Scoreboard: React.FC<ScoreboardProps> = ({ score, gameOver, won, re
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     backgroundColor: '#bbada0',
     padding: 10,
     borderRadius: 10,
     marginBottom: 10,
+    width: '100%',
+    position: 'relative',
   },
   scoreContainer: {
     backgroundColor: '#cdc1b4',
@@ -54,18 +52,6 @@ const styles = StyleSheet.create({
     color: '#776e65',
     fontWeight: 'bold',
   },
-  resetButton: {
-    backgroundColor: '#8f7a66',
-    padding: 10,
-    borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  resetButtonText: {
-    fontSize: 16,
-    color: '#f9f6f2',
-    fontWeight: 'bold',
-  },
   messageContainer: {
     position: 'absolute',
     left: 0,
@@ -82,4 +68,4 @@ const styles = StyleSheet.create({
     color: '#776e65',
     fontWeight: 'bold',
   },
-});
+});   
