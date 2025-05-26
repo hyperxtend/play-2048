@@ -10,8 +10,10 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
+    "build:web": "expo export:web",
+    "predeploy": "npm run build:web",
     "deploy": "gh-pages -d web-build"
-  },
+    },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
     "@react-navigation/bottom-tabs": "^7.3.10",
