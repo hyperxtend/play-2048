@@ -27,7 +27,9 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./web-build
+          path: ./dist
+          name: github-pages
+          retention-days: 1
   deploy:
     environment:
       name: github-pages
