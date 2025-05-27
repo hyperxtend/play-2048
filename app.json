@@ -22,7 +22,7 @@
       "bundler": "metro",
       "output": "single",
       "favicon": "./assets/images/favicon.png",
-      "publicPath": "/"
+      "publicPath": "/play-2048/"
     },
     "plugins": [
       "expo-router",
