@@ -23,7 +23,7 @@ export const Colors = {
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
   },
-};
+}
 
 export const TILE_COLOURS: { [key: number]: string } = {
   2: '#FFFDE7',
