@@ -7,7 +7,7 @@ interface ScoreboardProps {
   won: boolean;
 }
 
-export const Scoreboard: React.FC<ScoreboardProps> = ({ score, gameOver, won }) => {w
+export const Scoreboard: React.FC<ScoreboardProps> = ({ score, gameOver, won }) => {
   return (
     <View style={styles.container}>
       <View style={styles.scoreContainer}>
@@ -68,4 +68,4 @@ const styles = StyleSheet.create({
     color: '#776e65',
     fontWeight: 'bold',
   },
-});   
+});
